@@ -1,26 +1,27 @@
 <head>
-<script src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+
+<!--   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script> -->
 </head>
+<body>
+  <div id="dropin-wrapper">
+    <div id="checkout-message"></div>
+    <div id="dropin-container"></div>
+    <button id="submit-button">Submit payment</button>
+  </div>
+  <!-- includes the Braintree JS client SDK -->
 
-<div id="dropin-wrapper">
-  <div id="checkout-message"></div>
-  <div id="dropin-container"></div>
-  <button id="submit-button">Submit payment</button>
-</div>
-<!-- includes the Braintree JS client SDK -->
 
 
+  <!-- includes jQuery -->
 
-<!-- includes jQuery -->
-<script src="http://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-	
-<script>
-  var button = document.querySelector('#submit-button');
+  <script>
+    var button = document.querySelector('#submit-button');
 
-  braintree.dropin.create({
+    braintree.dropin.create({
     // Insert your tokenization key here
     authorization: 'sandbox_4n9gyh3g_7yscfj8n3rd947jj',
     container: '#dropin-container'
@@ -56,3 +57,5 @@
     });
   });
 </script>
+
+</body>

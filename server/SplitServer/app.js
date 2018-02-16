@@ -12,16 +12,15 @@
  var braintree = require("braintree");
  var cookieParser = require('cookie-parser'); 
  
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+ app.use(bodyParser.json());
+ app.use(bodyParser.urlencoded({ extended: false }));
+ app.use(cookieParser());
 
 //braintree
 var gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: "7yscfj8n3rd947jj",
-  publicKey: "7yscfj8n3rd947jj",
+  publicKey: "6q5yzrv75wqwwssq",
   privateKey: "4d11fbce8b80fdf9f3d9b55370247884"
 });
 
@@ -43,24 +42,25 @@ app.get("/client_token", function (req, res) {
 });
 
 /* process a sale(checkout) */
-app.post("/checkout", function (req, res) {
+app.post("/checkout", function (req, res, next) {
   var nonceFromTheClient = req.body.paymentMethodNonce;
   var amount = req.body.amount;
   console.log("amount is: " + amount);
   // Make sale
-  var result = gateway.transaction.sale({
-  amount: amount,
-  paymentMethodNonce: nonceFromTheClient,
-  options: {
-    submitForSettlement: true
-  }
-  }, function (err, result) {
-      if (result) {
-        res.send(result);
-  console.log("transaction succeeded");
-      } else {
-  console.log("transaction failed");
-        res.status(500).send(err);
-      }
+  var newTransaction = gateway.transaction.sale({
+    amount: amount,
+    paymentMethodNonce: nonceFromTheClient,
+    options: {
+      submitForSettlement: true
+    }
+  }, function (error, result) {
+    if (result) {
+      console.log("transaction succeeded");
+      console.log(result);
+      res.send(result);  
+    } else {
+      console.log("transaction failed");
+      res.status(500).send(error);
+    }
   });
 });
