@@ -11,13 +11,24 @@
     <div id="dropin-container"></div>
     <button id="submit-button">Submit payment</button>
   </div>
+  <!--  -->
+  <div>
+    <button id="mongo-button"> submit to mongo</button>
+  </div>
+  <script>
+    var mongoButton = document.querySelector('#mongo-button');
+    mongoButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/addNewRestaurant", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+  </script>
+
+
   <!-- includes the Braintree JS client SDK -->
-
-
-
   <!-- includes jQuery -->
-
-
   <script>
     var button = document.querySelector('#submit-button');
 

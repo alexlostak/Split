@@ -18,8 +18,15 @@
 
  var MongoClient = require('mongodb').MongoClient;
  var url = "mongodb://localhost:27017/myTestDB";
- var dbo;
+ var dbo ;
  var restCollection;  // db collection of restaurants
+
+// var mongoClient = new MongoClient(new Server('localhost', 27017));
+// mongoClient.open(function(err, mongoClient) {
+//   var db1 = mongoClient.db("myTestDB");
+
+//   mongoClient.close();
+// });
 
  init();
  //addRestaurantToDB("Kerby Lanes", 150)
@@ -28,7 +35,14 @@
 // make all initialization operations
 function init(){
   connectToDB();  // connects to mongoDB. makes sure that dbo gets the database
+  //setTimeout(addRestaurantToDB("p-terrys", 100), 3000);
 }
+
+app.get("/addNewRestaurant", function (req, res) {
+  addRestaurantToDB("p-terrys", 100);
+  res.send(getRestaurantFromDB("Kerby Lanes")); // TODO: fix. produces same error of stringify.
+});
+
 
 function connectToDB() {
   MongoClient.connect(url, function(err, db) {
@@ -36,11 +50,11 @@ function connectToDB() {
     console.log("Database connected!");
     dbo = db.db("myTestDB");
 
-    var newRest = { name: "Kerby Lanes", capacity: 150};
+    /*var newRest = { name: "Kerby Lanes", capacity: 150};
     dbo.collection("restaurants").insertOne(newRest, function(err, res) {
       if (err) throw err;
       console.log("1 document inserted");    
-    });
+    });*/
 
     //restCollection = dbo.collection("restaurants");
     // TODO close DB ?
@@ -49,10 +63,14 @@ function connectToDB() {
 
 function addRestaurantToDB(restName, restCapacity){
   var newRest = { name: restName, capacity: restCapacity };
-  dbo.collection("restaurants").insertOne(myobj, function(err, res) {
+  dbo.collection("restaurants").insertOne(newRest, function(err, res) {
     if (err) throw err;
     console.log("1 document inserted");    
   });
+}
+
+function getRestaurantFromDB(restName){
+  return dbo.collection("restaurants").find(restName);
 }
 
 //braintree
