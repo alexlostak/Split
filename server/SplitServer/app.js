@@ -16,6 +16,45 @@
  app.use(bodyParser.urlencoded({ extended: false }));
  app.use(cookieParser());
 
+ var MongoClient = require('mongodb').MongoClient;
+ var url = "mongodb://localhost:27017/myTestDB";
+ var dbo;
+ var restCollection;  // db collection of restaurants
+
+ init();
+ //addRestaurantToDB("Kerby Lanes", 150)
+
+
+// make all initialization operations
+function init(){
+  connectToDB();  // connects to mongoDB. makes sure that dbo gets the database
+}
+
+function connectToDB() {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    console.log("Database connected!");
+    dbo = db.db("myTestDB");
+
+    var newRest = { name: "Kerby Lanes", capacity: 150};
+    dbo.collection("restaurants").insertOne(newRest, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");    
+    });
+
+    //restCollection = dbo.collection("restaurants");
+    // TODO close DB ?
+  });
+}
+
+function addRestaurantToDB(restName, restCapacity){
+  var newRest = { name: restName, capacity: restCapacity };
+  dbo.collection("restaurants").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");    
+  });
+}
+
 //braintree
 var gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
