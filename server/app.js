@@ -16,8 +16,6 @@ app.listen(3000, () => console.log('listening on port 3000!'));
 
 connectToDB();  // connects to mongoDB. makes sure that dbo gets the database
 
-
-
 /* Set up Server and Routes */
 app.get('/',function(req, res) {
   res.sendFile(path.join(__dirname,"index.html"));
@@ -25,7 +23,7 @@ app.get('/',function(req, res) {
 
 /******* Database related functions *******/
 app.get("/addNewRestaurant", function (req, res) {
-  addRestaurantToDB("p-terrys", 100);
+  addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
 });
 
@@ -38,13 +36,38 @@ function connectToDB() {
   });
 }
 
-function addRestaurantToDB(restName, restCapacity){
-  var newRest = { name: restName, capacity: restCapacity };
+/*** Constructors ***/
+// returns -1 if restaurant and locatio name exists
+// return -2 if restName is null
+function addRestaurantToDB(restName, restCapacity, restLocation, restTables, restMenus){
+  // TODO check if location and restaurant exist
+  // dbo.collection("config").findOne({}, function(err, result) {
+  //   if (err) throw err;
+  //   console.log(result);
+  //   db.close();
+  // });
+
+//  var test = dbo.collection("config").find("restaurantID");
+  console.log("THIS IS IT " + test);
+  //if(dbo.collection("config").find(restaurantID))
+  // TODO generate unique restaurantID
+  console.log(restTables);    
+  if (restCapacity == null)
+    restCapacity = 0
+  if (restLocation == null)
+    restLocation = 0
+  var newRest = { name: restName, capacity: restCapacity , location : restLocation, tables : restTables, menus : restMenus};
   dbo.collection("restaurants").insertOne(newRest, function(err, res) {
     if (err) throw err;
-    console.log("1 document inserted");    
+    console.log("a restaurant was created");
   });
 }
+
+
+
+
+
+
 
 function getRestaurantFromDB(restName){
   return dbo.collection("restaurants").find(restName);
