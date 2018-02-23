@@ -40,27 +40,30 @@ function connectToDB() {
 // returns -1 if restaurant and locatio name exists
 // return -2 if restName is null
 function addRestaurantToDB(restName, restCapacity, restLocation, restTables, restMenus){
-  // TODO check if location and restaurant exist
-  // dbo.collection("config").findOne({}, function(err, result) {
-  //   if (err) throw err;
-  //   console.log(result);
-  //   db.close();
-  // });
-
-//  var test = dbo.collection("config").find("restaurantID");
-  console.log("THIS IS IT " + test);
-  //if(dbo.collection("config").find(restaurantID))
-  // TODO generate unique restaurantID
-  console.log(restTables);    
-  if (restCapacity == null)
-    restCapacity = 0
-  if (restLocation == null)
-    restLocation = 0
-  var newRest = { name: restName, capacity: restCapacity , location : restLocation, tables : restTables, menus : restMenus};
-  dbo.collection("restaurants").insertOne(newRest, function(err, res) {
+  // TODO check if location and restaurant exist  
+  dbo.collection("config").findOne({},{restaurantID : 1}, function(err, result) {
     if (err) throw err;
-    console.log("a restaurant was created");
-  });
+    var restID = result.restaurantID;
+    console.log(restID);
+    if (restCapacity == null)
+      restCapacity = 0
+    if (restLocation == null)
+      restLocation = 0
+    var newRest = {restID : restID, name: restName, capacity: restCapacity , location : restLocation, tables : restTables, menus : restMenus};
+    dbo.collection("restaurants").insertOne(newRest, function(err, res) {
+      if (err) throw err;
+      // increment counter
+      var myquery = { restaurantID : restID};
+      newRestID = restID + 1;
+      console.log(newRestID);
+      var newvalues = { $set: {restaurantID :  newRestID}};
+      dbo.collection("config").updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("a restaurant counter incremented");
+      });
+      console.log("a restaurant was created");
+    });
+  })
 }
 
 
