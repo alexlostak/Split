@@ -41,7 +41,7 @@ function connectToDB() {
 // return -2 if restName is null
 function addRestaurantToDB(restName, restCapacity, restLocation, restTables){
   // TODO check if location and restaurant exist  
-  dbo.collection("config").findOne(restaurantID : { $exists: true }}, function(err, result) {
+  dbo.collection("config").findOne({restaurantID : { $exists: true }}, function(err, result) {
     if (err) throw err;
     var restID = result.restaurantID;
     if (restCapacity == null)
