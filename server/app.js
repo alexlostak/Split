@@ -23,10 +23,10 @@ app.get('/',function(req, res) {
 
 /******* Database related functions *******/
 app.get("/addNewRestaurant", function (req, res) {
-  addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
+  //addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
+  addMenuToDB("breakfast", 1, "breakfast");
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
 });
-
 
 function connectToDB() {
   MongoClient.connect(url, function(err, db) {
@@ -39,39 +39,67 @@ function connectToDB() {
 /*** Constructors ***/
 // returns -1 if restaurant and locatio name exists
 // return -2 if restName is null
-function addRestaurantToDB(restName, restCapacity, restLocation, restTables, restMenus){
+function addRestaurantToDB(restName, restCapacity, restLocation, restTables){
   // TODO check if location and restaurant exist  
   dbo.collection("config").findOne({},{restaurantID : 1}, function(err, result) {
     if (err) throw err;
     var restID = result.restaurantID;
-    console.log(restID);
     if (restCapacity == null)
       restCapacity = 0
     if (restLocation == null)
       restLocation = 0
-    var newRest = {restID : restID, name: restName, capacity: restCapacity , location : restLocation, tables : restTables, menus : restMenus};
+    var newRest = {restID : restID, name: restName, capacity: restCapacity , location : restLocation, tables : restTables};
     dbo.collection("restaurants").insertOne(newRest, function(err, res) {
       if (err) throw err;
       // increment counter
       var myquery = { restaurantID : restID};
-      newRestID = restID + 1;
-      console.log(newRestID);
+      var newRestID = restID + 1;
       var newvalues = { $set: {restaurantID :  newRestID}};
       dbo.collection("config").updateOne(myquery, newvalues, function(err, res) {
         if (err) throw err;
-        console.log("a restaurant counter incremented");
+        console.log("restaurant counter incremented");
       });
       console.log("a restaurant was created");
     });
   })
 }
 
+// examples for menuType: 'breakfast', 'happy hour'
+function addMenuToDB(menuName, restID, menuType){
+  dbo.collection("config").findOne({menuID : 1}, function(err, result) {
+    // TODO check if restID actually exists
+    var newMenu = {restID : restID, menuName : menuName, menuID : result.menuID, menuType : menuType}
+    dbo.collection("menus").insertOne(newMenu, function(err, res) {
+      if (err) throw err;
+      // increment counter
+      dbo.collection("config").updateOne({ menuID : result.menuID}, { $set: {menuID :  result.menuID + 1}}, function(err, res) {
+        if (err) throw err;
+        console.log("menu counter incremented");
+      });
+      console.log("a menu was created");
+    });
+  })
+}
 
+// itemType example: 'drink', 'add-on', 'main', 'burgers'. In other words, the section in menu.
+// price gotta be float
+function addItemToDB(itemName, menuID, restID, itemType, price, description, isGluten, isDairy, isShellfish, isNuts){
+  // TODO: ensure menuID and restID exist
+  dbo.collection("config").findOne({itemID : 1}, function(err, result) {
+    var newItem = {itemID : result.itemID , itemName: itemName, menuID : menuID, restID : restID, itemType : itemType, price : price, description : description, isGluten : isGluten, isDairy : isDairy, isShellfish : isShellfish, isNuts : isNuts}
+    dbo.collection("items").insertOne(newItem, function(err, res) {
+      if (err) throw err;
+      // increment counter
+      dbo.collection("config").updateOne({itemID : result.itemID}, { $set: {itemID :  result.itemID + 1}}, function(err, res) {
+        if (err) throw err;
+        console.log("item counter incremented");
+      });
+      console.log("an item was created");
+    });
+  })
+}
 
-
-
-
-
+// DB retreival functions
 function getRestaurantFromDB(restName){
   return dbo.collection("restaurants").find(restName);
 }
