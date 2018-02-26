@@ -12,7 +12,7 @@ var dbo ;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.listen(3000, () => console.log('listening on port 3000!'));
+app.listen(80, () => console.log('listening on port 80!'));
 
 connectToDB();  // connects to mongoDB. makes sure that dbo gets the database
 
