@@ -41,7 +41,7 @@ function connectToDB() {
 // return -2 if restName is null
 function addRestaurantToDB(restName, restCapacity, restLocation, restTables){
   // TODO check if location and restaurant exist  
-  dbo.collection("config").findOne({},{restaurantID : 1}, function(err, result) {
+  dbo.collection("config").findOne(restaurantID : { $exists: true }}, function(err, result) {
     if (err) throw err;
     var restID = result.restaurantID;
     if (restCapacity == null)
@@ -66,7 +66,7 @@ function addRestaurantToDB(restName, restCapacity, restLocation, restTables){
 
 // examples for menuType: 'breakfast', 'happy hour'
 function addMenuToDB(menuName, restID, menuType){
-  dbo.collection("config").findOne({menuID : 1}, function(err, result) {
+  dbo.collection("config").findOne({menuID : { $exists: true } }, function(err, result) {
     // TODO check if restID actually exists
     var newMenu = {restID : restID, menuName : menuName, menuID : result.menuID, menuType : menuType}
     dbo.collection("menus").insertOne(newMenu, function(err, res) {
@@ -85,7 +85,7 @@ function addMenuToDB(menuName, restID, menuType){
 // price gotta be float
 function addItemToDB(itemName, menuID, restID, itemType, price, description, isGluten, isDairy, isShellfish, isNuts){
   // TODO: ensure menuID and restID exist
-  dbo.collection("config").findOne({itemID : 1}, function(err, result) {
+  dbo.collection("config").findOne({itemID : { $exists: true }}, function(err, result) {
     var newItem = {itemID : result.itemID , itemName: itemName, menuID : menuID, restID : restID, itemType : itemType, price : price, description : description, isGluten : isGluten, isDairy : isDairy, isShellfish : isShellfish, isNuts : isNuts}
     dbo.collection("items").insertOne(newItem, function(err, res) {
       if (err) throw err;
