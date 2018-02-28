@@ -99,6 +99,50 @@ function addItemToDB(itemName, menuID, restID, itemType, price, description, isG
   })
 }
 
+// receives restID and tableID and returns a tabID, or an error if tableID is currently in use
+// AKA CreateTab
+function addTabToDB(){
+
+}
+
+// receives userID and a tabID, returns 1 for success, 0 otherwise
+function addUserToTab(){
+
+}
+
+// receives userID and a tabID, returns 1 for success, 0 otherwise
+function removeUserFromTab(){
+
+}
+
+// receives tabID and itemID return 1 for success, 0 otherwise
+function addItemToTab(){
+
+}
+
+// receives tabID and itemID return 1 for success, 0 otherwise
+function removeItemFromTab(){
+
+}
+
+// receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
+function claimItem(){
+  //TODO check if item taken already. return 0 if it is.
+  //TODO check if status of tab has been changed
+}
+
+// receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
+function unClaimItem(){
+  // TODO check if status of tab has been changed
+  // TODO 
+}
+
+// receives an itemID, userID, tabID, numOf
+function split(){
+
+}
+
+
 // DB retreival functions
 function getRestaurantFromDB(restName){
   return dbo.collection("restaurants").find(restName);
