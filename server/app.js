@@ -6,8 +6,8 @@ var bodyParser = require('body-parser');
 var braintree = require("braintree");
 var MongoClient = require('mongodb').MongoClient;
 
-var url = "mongodb://localhost:27017/myTestDB";
-var dbo ;
+var url = "mongodb://localhost:27017/SplitServer";
+var dbo;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,11 +28,30 @@ app.get("/addNewRestaurant", function (req, res) {
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
 });
 
+// given a tabID, sends back a tab JSON object
+app.get("/getTab", function (req, res) {
+  // TODO check if tab exists
+  // dbo.collection("tabs").findOne({tabID : req.body.tabID}, function(err, result) {    
+  //   res.send(result); 
+  // });
+
+  dbo.collection("tabs").findOne({tabID : 1}, function(err, result) {    
+    console.log(result);
+    res.send(result); 
+  });
+
+});
+
+app.get("/createTab", function (req, res) {
+  // addTabToDB(req.body.restID,req.body.tableID);
+  addTabToDB(1,1);
+});
+
 function connectToDB() {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     console.log("Database connected!");
-    dbo = db.db("myTestDB");
+    dbo = db.db("SplitServer");
   });
 }
 
@@ -101,23 +120,70 @@ function addItemToDB(itemName, menuID, restID, itemType, price, description, isG
 
 // receives restID and tableID and returns a tabID, or an error if tableID is currently in use
 // AKA CreateTab
-function addTabToDB(){
+// status can have open/closed (any other thing?)
+function addTabToDB(tableID, restID){
+  // ensure restID and tableID exist
+  dbo.collection("config").findOne({tabID : { $exists: true }}, function(err, result) {
+    var newTab = {tabID : result.tabID , restID : restID, tableID : tableID, status : "open", itemList : [], claimedItems : []};
+    dbo.collection("tabs").insertOne(newTab, function(err, res) {
+      if (err) throw err;
+      // increment counter
+      dbo.collection("config").updateOne({tabID : result.tabID}, { $set: {tabID :  result.tabID + 1}}, function(err, res) {
+        if (err) throw err;
+        console.log("tab counter incremented");
+      });
+      console.log("a tab was created");
+    });
+  }) 
+}
 
+// add user to database
+function addUserToDB(userName, firstName, lastName, password){
+  // TODO ensure unique name?
+  dbo.collection("config").findOne({unserID : { $exists: true }}, function(err, result) {
+    newUser = {userID:result.userID, userName : userName, activeTab : null, tabHistory: [], firstName : firstName, lastName : lastName, frinedList : [], password : password}
+    dbo.collection("users").insertOne(newUser, function(err, res) {
+      if (err) throw err;
+      // increment counter
+      dbo.collection("config").updateOne({userID : result.userID}, { $set: {userID :  result.userID + 1}}, function(err, res) {
+        if (err) throw err;
+        console.log("user counter incremented");
+      });
+      console.log("a user was created");
+    });
+  }); 
+}
+
+
+
+// receives userID and a tabID, returns 1 for success, 0 otherwise
+function addUserToTab(tabID, userID){
+  // TODO ensure tabid and userID exist
+  // TODO check if user already has an active tab
+  dbo.collection("users").updateOne({userID : userID}, { $set: {activeTab : tabID}}, function(err, res) {
+        if (err) throw err;
+        console.log("user actived tab");
+      });
 }
 
 // receives userID and a tabID, returns 1 for success, 0 otherwise
-function addUserToTab(){
-
-}
-
-// receives userID and a tabID, returns 1 for success, 0 otherwise
-function removeUserFromTab(){
-
+function removeUserFromTab(tabID, userID){
+  // TODO ensure tabid and userID exist
+  // TODO check if user has tabID as its active tab
+  // assume that user has no claimed items
+    dbo.collection("users").updateOne({userID : userID}, { $set: {activeTab : null}}, function(err, res) {
+        if (err) throw err;
+        console.log("user deactivated tab");
+      });
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise
-function addItemToTab(){
-
+function addItemToTab(tabID, itemID){
+    // TODO ensure tabid and itemID exist
+    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {itemList : itemID}}, function(err, res) {
+        if (err) throw err;
+        console.log("added item to tab");
+      });
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise

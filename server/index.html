@@ -14,12 +14,33 @@
   <!--  -->
   <div>
     <button id="mongo-button"> submit to mongo</button>
+    <button id="get-tab-button"> get tab test </button>
+    <button id="create-tab-button"> create tab test </button>
+
+
   </div>
   <script>
     var mongoButton = document.querySelector('#mongo-button');
     mongoButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/addNewRestaurant", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+
+    var getTabButton = document.querySelector('#get-tab-button');
+    getTabButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/getTab", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var createTabButton = document.querySelector('#create-tab-button');
+    createTabButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/createTab", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
