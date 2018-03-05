@@ -22,10 +22,14 @@ app.get('/',function(req, res) {
 });
 
 /******* Database related functions *******/
-app.get("/addNewRestaurant", function (req, res) {
-  //addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
-  addMenuToDB("breakfast", 1, "breakfast");
+app.get("/createRestaurant", function (req, res) {
+  addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
+});
+
+app.get("/createMenu", function (req, res) {
+  addMenuToDB("breakfast", 1, "breakfast");
+  res.send("success"); // TODO: fix. produces same error of stringify.
 });
 
 // given a tabID, sends back a tab JSON object
@@ -45,6 +49,14 @@ app.get("/getTab", function (req, res) {
 app.get("/createTab", function (req, res) {
   // addTabToDB(req.body.restID,req.body.tableID);
   addTabToDB(1,1);
+  res.send("success"); 
+});
+
+app.get("/createUser", function (req, res) {
+  // addTabToDB(req.body.restID,req.body.tableID);
+  // names to lower case?
+  addUserToDB("john1", "john", "doe", "Pass1234");
+  res.send("User Created"); 
 });
 
 function connectToDB() {
@@ -140,8 +152,8 @@ function addTabToDB(tableID, restID){
 // add user to database
 function addUserToDB(userName, firstName, lastName, password){
   // TODO ensure unique name?
-  dbo.collection("config").findOne({unserID : { $exists: true }}, function(err, result) {
-    newUser = {userID:result.userID, userName : userName, activeTab : null, tabHistory: [], firstName : firstName, lastName : lastName, frinedList : [], password : password}
+  dbo.collection("config").findOne({userID : { $exists: true }}, function(err, result) {
+    newUser = {userID : result.userID, userName : userName, activeTab : null, tabHistory: [], firstName : firstName, lastName : lastName, frinedList : [], password : password}
     dbo.collection("users").insertOne(newUser, function(err, res) {
       if (err) throw err;
       // increment counter
