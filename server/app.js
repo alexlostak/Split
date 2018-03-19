@@ -16,12 +16,13 @@ app.listen(80, () => console.log('listening on port 80!'));
 
 connectToDB();  // connects to mongoDB. makes sure that dbo gets the database
 
-/* Set up Server and Routes */
+/***** Set up Server and Routes (API calls) *****/
 app.get('/',function(req, res) {
   res.sendFile(path.join(__dirname,"index.html"));
 });
 
-/******* Database related functions *******/
+/*** Constructor APIs ***/
+
 app.get("/createRestaurant", function (req, res) {
   addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
@@ -32,18 +33,10 @@ app.get("/createMenu", function (req, res) {
   res.send("success"); // TODO: fix. produces same error of stringify.
 });
 
-// given a tabID, sends back a tab JSON object
-app.get("/getTab", function (req, res) {
-  // TODO check if tab exists
-  // dbo.collection("tabs").findOne({tabID : req.body.tabID}, function(err, result) {    
-  //   res.send(result); 
-  // });
-
-  dbo.collection("tabs").findOne({tabID : 1}, function(err, result) {    
-    console.log(result);
-    res.send(result); 
-  });
-
+app.get("/createItem", function (req, res) {
+  // TODO pass values from req
+  // addItemToDB(itemName, menuID, restID, itemType, price, description, isGluten, isDairy, isShellfish, isNuts);
+  res.send("success"); // TODO: fix. produces same error of stringify.
 });
 
 app.get("/createTab", function (req, res) {
@@ -59,6 +52,36 @@ app.get("/createUser", function (req, res) {
   res.send("User Created"); 
 });
 
+/*** Getter APIs ***/
+
+// given a tabID, sends back a tab JSON object
+app.get("/getTab", function (req, res) {
+  // TODO check if tab exists
+  // dbo.collection("tabs").findOne({tabID : req.body.tabID}, function(err, result) {    
+  //   res.send(result); 
+  // });
+
+  dbo.collection("tabs").findOne({tabID : 1}, function(err, result) {    
+    console.log(result);
+    res.send(result); 
+  });
+
+});
+
+/*** Setter APIs ***/
+
+// given a tabID, sends back a tab JSON object
+app.get("/addUserToTab", function (req, res) {
+  
+  addUserToTab()
+  
+  res.send("added user to tab"); 
+  
+
+});
+
+/******* Database related functions *******/
+
 function connectToDB() {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
@@ -68,6 +91,7 @@ function connectToDB() {
 }
 
 /*** Constructors ***/
+
 // returns -1 if restaurant and locatio name exists
 // return -2 if restName is null
 function addRestaurantToDB(restName, restCapacity, restLocation, restTables){
