@@ -68,15 +68,25 @@ app.get("/getTab", function (req, res) {
 
 });
 
+
+
 /*** Setter APIs ***/
 
 // given a tabID, sends back a tab JSON object
 app.get("/addUserToTab", function (req, res) {
-  
-  addUserToTab()
+  //TODO this function
+  //addUserToTab()
   
   res.send("added user to tab"); 
   
+
+});
+
+app.get("/addItemToTab", function (req, res) {
+  //TODO this function
+  //addItemToTab()
+  
+  res.send("added item to tab"); 
 
 });
 
