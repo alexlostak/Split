@@ -23,6 +23,12 @@ app.get('/',function(req, res) {
 
 /*** Constructor APIs ***/
 
+app.get("/postTest", function (req, res) {
+  console.log(req);
+  console.log(req.body);
+  res.send({"response": "aight"}); // TODO: fix. produces same error of stringify.
+});
+
 app.get("/createRestaurant", function (req, res) {
   addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
