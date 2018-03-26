@@ -23,9 +23,10 @@ app.get('/',function(req, res) {
 
 /*** Constructor APIs ***/
 
-app.get("/postTest", function (req, res) {
+app.post("/postTest", function (req, res) {
   console.log(req);
   console.log(req.body);
+  console.log(req.body.cc_code);
   res.send({"response": "aight"}); // TODO: fix. produces same error of stringify.
 });
 
@@ -93,6 +94,16 @@ app.get("/addItemToTab", function (req, res) {
   //addItemToTab()
   
   res.send("added item to tab"); 
+
+});
+
+/*** Delete APIs ***/
+
+app.get("/removeItemFromMenu", function (req, res) {
+  //TODO this function
+  //removeItemFromDB(req.body.itemID)
+  
+  res.send("removed item from menu"); 
 
 });
 
@@ -170,6 +181,13 @@ function addItemToDB(itemName, menuID, restID, itemType, price, description, isG
   })
 }
 
+function removeItemFromDB(itemID){
+  dbo.collection("items").deleteOne({itemID : itemID}, { $set: {activeTab : tabID}}, function(err, res) {
+      if (err) throw err;
+      console.log("item removed from database");
+    });
+}
+
 // receives restID and tableID and returns a tabID, or an error if tableID is currently in use
 // AKA CreateTab
 // status can have open/closed (any other thing?)
@@ -239,14 +257,18 @@ function addItemToTab(tabID, itemID){
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise
-function removeItemFromTab(){
-
+function removeItemFromTab(tabID, itemID){
+  dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}}, function(err, res) {
+        if (err) throw err;
+        console.log("removed item from tab");
+      });
 }
 
 // receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
-function claimItem(){
+function claimItem(userID, itemID, tabID){
   //TODO check if item taken already. return 0 if it is.
   //TODO check if status of tab has been changed
+
 }
 
 // receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
