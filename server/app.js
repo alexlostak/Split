@@ -43,7 +43,8 @@ app.get("/createMenu", function (req, res) {
 app.get("/createItem", function (req, res) {
   // TODO pass values from req
   // addItemToDB(itemName, menuID, restID, itemType, price, description, isGluten, isDairy, isShellfish, isNuts);
-  res.send("success"); // TODO: fix. produces same error of stringify.
+  addItemToDB("potatoes", 2, 1, "Appetizer", 5, "yummy dish", false, false, false, false);
+  res.send("created item"); 
 });
 
 app.get("/createTab", function (req, res) {
@@ -75,8 +76,6 @@ app.get("/getTab", function (req, res) {
 
 });
 
-
-
 /*** Setter APIs ***/
 
 // given a tabID, sends back a tab JSON object
@@ -91,9 +90,18 @@ app.get("/addUserToTab", function (req, res) {
 
 app.get("/addItemToTab", function (req, res) {
   //TODO this function
-  //addItemToTab()
-  
+  //addItemToTab(req.body.tabID, req.body.itemID)
+  addItemToTab(1, 1)
   res.send("added item to tab"); 
+
+});
+
+app.get("/claimItem", function (req, res) {
+  //TODO this function
+
+  //claimItem(req.body.userID, req.body.itemID, req.body.tabID);
+  claimItem(2, 1, 1);
+  res.send("claimed item"); 
 
 });
 
@@ -191,6 +199,7 @@ function removeItemFromDB(itemID){
 // receives restID and tableID and returns a tabID, or an error if tableID is currently in use
 // AKA CreateTab
 // status can have open/closed (any other thing?)
+// cleaimed items is a list of this type: {itemID:[userID, userID]}
 function addTabToDB(tableID, restID){
   // ensure restID and tableID exist
   dbo.collection("config").findOne({tabID : { $exists: true }}, function(err, result) {
@@ -250,15 +259,26 @@ function removeUserFromTab(tabID, userID){
 // receives tabID and itemID return 1 for success, 0 otherwise
 function addItemToTab(tabID, itemID){
     // TODO ensure tabid and itemID exist
-    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {itemList : itemID}}, function(err, res) {
+    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {claimedItems: {itemID : itemID, userList : []}}}, function(err, res) {
         if (err) throw err;
         console.log("added item to tab");
       });
+
+  dbo.collection("items").findOne({itemID : itemID}, function(err, result) {
+     dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {itemList : result}}, function(err, res) {
+        if (err) throw err;
+        console.log("added item to tab item list");
+      });
+  });
+
+
+
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise
 function removeItemFromTab(tabID, itemID){
-  dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}}, function(err, res) {
+  //TODO make sure that we delete from claimedItems
+  dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}, $pull: {claimedItems : itemID}  }, function(err, res) {
         if (err) throw err;
         console.log("removed item from tab");
       });
@@ -268,7 +288,10 @@ function removeItemFromTab(tabID, itemID){
 function claimItem(userID, itemID, tabID){
   //TODO check if item taken already. return 0 if it is.
   //TODO check if status of tab has been changed
-
+  dbo.collection("tabs").updateOne({tabID : tabID, 'claimedItems.itemID' : itemID}, { $push: {'claimedItems.$.userList' : userID }}, function(err, res) {
+        if (err) throw err;
+        console.log("claimed item");
+      });
 }
 
 // receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
