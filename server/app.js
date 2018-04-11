@@ -36,15 +36,15 @@ app.get("/createRestaurant", function (req, res) {
 });
 
 app.get("/createMenu", function (req, res) {
+  // addMenuToDB(req.body.menuName, req.body.restID, req.body.menuType)  
   addMenuToDB("breakfast", 1, "breakfast");
   res.send("success"); // TODO: fix. produces same error of stringify.
 });
 
 app.get("/createItem", function (req, res) {
-  // TODO pass values from req
-  // addItemToDB(itemName, menuID, restID, itemType, price, description, isGluten, isDairy, isShellfish, isNuts);
-  addItemToDB("potatoes", 2, 1, "Appetizer", 5, "yummy dish", false, false, false, false);
-  res.send("created item"); 
+  // addItemToDB(req.body.itemName, req.body.menuID, req.body.restID, req.body.itemType, req.body.price, req.body.description, req.body.isGluten, req.body.isDairy, req.body.isShellfish, req.body.isNuts);
+  addItemToDB("fries", 2, 1, "Appetizer", 5, "yummy dish", false, false, false, false);
+  res.send("created item");
 });
 
 app.get("/createTab", function (req, res) {
@@ -73,7 +73,6 @@ app.get("/getTab", function (req, res) {
     console.log(result);
     res.send(result); 
   });
-
 });
 
 /*** Setter APIs ***/
@@ -91,7 +90,8 @@ app.get("/addUserToTab", function (req, res) {
 app.get("/addItemToTab", function (req, res) {
   //TODO this function
   //addItemToTab(req.body.tabID, req.body.itemID)
-  addItemToTab(1, 1)
+  addItemToTab(1, 4);
+  addItemToTab(1, 5);
   res.send("added item to tab"); 
 
 });
