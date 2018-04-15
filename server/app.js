@@ -43,7 +43,9 @@ app.get("/createMenu", function (req, res) {
 
 app.get("/createItem", function (req, res) {
   // addItemToDB(req.body.itemName, req.body.menuID, req.body.restID, req.body.itemType, req.body.price, req.body.description, req.body.isGluten, req.body.isDairy, req.body.isShellfish, req.body.isNuts);
-  addItemToDB("fries", 2, 1, "Appetizer", 5, "yummy dish", false, false, false, false);
+  addItemToDB("Potatoes", 2, 1, "Appetizer", 5, "yummy dish", false, false, false, false);
+  addItemToDB("Creamed Spinach", 2, 1, "Appetizer", 7, "yummy dish", false, false, false, false);
+  addItemToDB("Hamburger", 2, 1, "Main", 5, "seven patties on a warm brioche with a side of creamy spinach", false, false, false, false);	
   res.send("created item");
 });
 
@@ -91,7 +93,6 @@ app.get("/addItemToTab", function (req, res) {
   //TODO this function
   //addItemToTab(req.body.tabID, req.body.itemID)
   addItemToTab(1, 4);
-  addItemToTab(1, 5);
   res.send("added item to tab"); 
 
 });
