@@ -98,7 +98,7 @@ app.get("/addItemToTab", function (req, res) {
 
 });
 
-app.get("/claimItem", function (req, res) {
+app.post("/claimItem", function (req, res) {
   //TODO this function
 
   //claimItem(req.body.userID, req.body.itemID, req.body.tabID);
@@ -119,18 +119,13 @@ app.get("/removeItemFromTab", function (req, res) {
 app.get("/removeItemFromMenu", function (req, res) {
   //TODO this function
   //removeItemFromDB(req.body.itemID)
-  
   res.send("removed item from menu"); 
-
 });
 
-app.get("/unclaimItem", function (req, res) {
-  //TODO this function
-
-  //unclaimItem(req.body.userID, req.body.itemID, req.body.tabID);
-  unclaimItem(2, 1, 1);
-  res.send("claimed item"); 
-
+app.post("/unclaimItem", function (req, res) {
+  unclaimItem(req.body.userID, req.body.itemID, req.body.tabID);
+  //unclaimItem(2, 1, 1);
+  res.send("unclaimed item"); 
 });
 
 /******* Database related functions *******/
@@ -310,9 +305,12 @@ function claimItem(userID, itemID, tabID){
 }
 
 // receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
-function unClaimItem(){
+function unclaimItem(userID, itemID, tabID){
   // TODO check if status of tab has been changed
-  // TODO 
+  dbo.collection("tabs").updateOne({tabID : tabID, 'claimedItems.itemID' : itemID}, { $pull: {'claimedItems.$.userList' : userID }}, function(err, res) {
+        if (err) throw err;
+        console.log("unclaimed item");
+      });
 }
 
 // receives an itemID, userID, tabID, numOf

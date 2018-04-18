@@ -22,6 +22,7 @@
     <button id="add-itemToTab-button"> add Item To Tab </button>
     <button id="add-claimItem-button"> claim item </button>
     <button id="remove-item-from-tab"> remove item </button>
+    <button id="unclaimItem-button"> unclaim item </button>
 
 
   </div>
@@ -94,6 +95,14 @@
     createTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/claimItem", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var createTabButton = document.querySelector('#unclaimItem-button');
+    createTabButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/unclaimItem", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
