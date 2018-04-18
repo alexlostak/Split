@@ -32,6 +32,7 @@ app.post("/postTest", function (req, res) {
 
 app.get("/createRestaurant", function (req, res) {
   addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
+  //addRestaurantToDB(req.body.restName, req.body.restCapacity, req.body.restLocation, req.body.restTables)
   res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
 });
 
@@ -108,11 +109,27 @@ app.get("/claimItem", function (req, res) {
 
 /*** Delete APIs ***/
 
+app.get("/removeItemFromTab", function (req, res) {
+  //TODO this function 
+  //removeItemFromTab(req.body.tabID, req.body.itemID)
+  removeItemFromTab(1, 5);
+  res.send("removed item from menu"); 
+});
+
 app.get("/removeItemFromMenu", function (req, res) {
   //TODO this function
   //removeItemFromDB(req.body.itemID)
   
   res.send("removed item from menu"); 
+
+});
+
+app.get("/unclaimItem", function (req, res) {
+  //TODO this function
+
+  //unclaimItem(req.body.userID, req.body.itemID, req.body.tabID);
+  unclaimItem(2, 1, 1);
+  res.send("claimed item"); 
 
 });
 
@@ -271,15 +288,12 @@ function addItemToTab(tabID, itemID){
         console.log("added item to tab item list");
       });
   });
-
-
-
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise
 function removeItemFromTab(tabID, itemID){
   //TODO make sure that we delete from claimedItems
-  dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}, $pull: {claimedItems : itemID}  }, function(err, res) {
+  dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}, $pull: {claimedItems : {itemID:itemID}}  }, function(err, res) {
         if (err) throw err;
         console.log("removed item from tab");
       });

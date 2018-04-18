@@ -21,6 +21,8 @@
     <button id="create-item-button"> create item </button>
     <button id="add-itemToTab-button"> add Item To Tab </button>
     <button id="add-claimItem-button"> claim item </button>
+    <button id="remove-item-from-tab"> remove item </button>
+
 
   </div>
   <script>
@@ -60,6 +62,14 @@
     createTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/createUser", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var createTabButton = document.querySelector('#remove-item-from-tab');
+    createTabButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/removeItemFromTab", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
