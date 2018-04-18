@@ -98,11 +98,15 @@ app.get("/addItemToTab", function (req, res) {
 
 });
 
-app.get("/claimItem", function (req, res) {
+app.post("/claimItem", function (req, res) {
   //TODO this function
 
-  //claimItem(req.body.userID, req.body.itemID, req.body.tabID);
-  claimItem(2, 1, 1);
+  claimItem(req.body.userID, req.body.itemID, req.body.tabID);
+  console.log(req.body.userID);
+  console.log(req.body.itemID);
+  console.log(req.body.tabID);
+
+  //claimItem(2, 1, 1);
   res.send("claimed item"); 
 
 });
