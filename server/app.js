@@ -72,7 +72,7 @@ app.get("/getTab", function (req, res) {
   //   res.send(result); 
   // });
 
-  dbo.collection("tabs").findOne({tabID : 1}, function(err, result) {    
+  dbo.collection("tabs").findOne({tabID : parseInt(req.body.tabID)}, function(err, result) {    
     console.log(result);
     res.send(result); 
   });
