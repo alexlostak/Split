@@ -93,7 +93,10 @@ app.get("/addUserToTab", function (req, res) {
 app.get("/addItemToTab", function (req, res) {
   //TODO this function
   //addItemToTab(req.body.tabID, req.body.itemID)
-  addItemToTab(1, 4);
+  addItemToTab(1, 1);
+  addItemToTab(1, 2);
+  addItemToTab(1, 3);
+
   res.send("added item to tab"); 
 
 });
@@ -101,11 +104,14 @@ app.get("/addItemToTab", function (req, res) {
 app.post("/claimItem", function (req, res) {
   //TODO this function
 
-  claimItem(req.body.userID, req.body.itemID, req.body.tabID);
+  claimItem(parseInt(req.body.userID), parseInt(req.body.tabItemID), parseInt(req.body.tabID));
   console.log(req.body.userID);
   console.log(req.body.itemID);
   console.log(req.body.tabID);
 
+	console.log(typeof req.body.userID);
+	  console.log(typeof req.body.itemID);
+	  console.log(typeof req.body.tabID);
   //claimItem(2, 1, 1);
   res.send("claimed item"); 
 
@@ -127,7 +133,7 @@ app.get("/removeItemFromMenu", function (req, res) {
 });
 
 app.post("/unclaimItem", function (req, res) {
-  unclaimItem(req.body.userID, req.body.itemID, req.body.tabID);
+  unclaimItem(parseInt(req.body.userID), parseInt(req.body.itemID), parseInt(req.body.tabID));
   //unclaimItem(2, 1, 1);
   res.send("unclaimed item"); 
 });
@@ -307,19 +313,19 @@ function removeItemFromTab(tabID, itemID){
 }
 
 // receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
-function claimItem(userID, itemID, tabID){
+function claimItem(userID, tabItemID, tabID){
   //TODO check if item taken already. return 0 if it is.
   //TODO check if status of tab has been changed
-  dbo.collection("tabs").updateOne({tabID : tabID, 'claimedItems.itemID' : itemID}, { $push: {'claimedItems.$.userList' : userID }}, function(err, res) {
+  dbo.collection("tabs").updateOne({tabID : tabID, 'claimedItems.tabItemID' : tabItemID}, { $push: {'claimedItems.$.userList' : userID }}, function(err, res) {
         if (err) throw err;
         console.log("claimed item");
       });
 }
 
 // receives userID, itemID, and tabID, returns 1 for success, 0 otherwise
-function unclaimItem(userID, itemID, tabID){
+function unclaimItem(userID, tabItemID, tabID){
   // TODO check if status of tab has been changed
-  dbo.collection("tabs").updateOne({tabID : tabID, 'claimedItems.itemID' : itemID}, { $pull: {'claimedItems.$.userList' : userID }}, function(err, res) {
+  dbo.collection("tabs").updateOne({tabID : tabID, 'claimedItems.tabItemID' : tabItemID}, { $pull: {'claimedItems.$.userList' : userID }}, function(err, res) {
         if (err) throw err;
         console.log("unclaimed item");
       });
