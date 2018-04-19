@@ -275,11 +275,19 @@ function removeUserFromTab(tabID, userID){
 
 // receives tabID and itemID return 1 for success, 0 otherwise
 function addItemToTab(tabID, itemID){
-    // TODO ensure tabid and itemID exist
-    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {claimedItems: {itemID : itemID, userList : []}}}, function(err, res) {
+    // TODO ensure tabid and itemID exist    
+  dbo.collection("config").findOne({tabItemID : { $exists: true }}, function(err, result) {
+    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {claimedItems: {tabItemId : result.tabItemID, itemID : itemID, userList : []}}}, function(err, res) {
         if (err) throw err;
         console.log("added item to tab");
+        dbo.collection("config").updateOne({tabItemID : result.tabItemID}, { $set: {tabItemID :  result.tabItemID + 1}}, function(err, res2) {
+          if (err) throw err;
+          console.log("item counter incremented");
+        });      
       });
+  });
+
+  
 
   dbo.collection("items").findOne({itemID : itemID}, function(err, result) {
      dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {itemList : result}}, function(err, res) {
