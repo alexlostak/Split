@@ -23,6 +23,7 @@
     <button id="add-claimItem-button"> claim item </button>
     <button id="remove-item-from-tab"> remove item </button>
     <button id="unclaimItem-button"> unclaim item </button>
+    <button id="checkout-button"> checkout </button>
 
 
   </div>
@@ -59,53 +60,65 @@
       console.log(xmlHttp.responseText);
     }    );
 
-    var createTabButton = document.querySelector('#create-user-button');
-    createTabButton.addEventListener('click', function () {    
+    var createUserButton = document.querySelector('#create-user-button');
+    createUserButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/createUser", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
 
-    var createTabButton = document.querySelector('#remove-item-from-tab');
-    createTabButton.addEventListener('click', function () {    
+    var removeItemFromTabButton = document.querySelector('#remove-item-from-tab');
+    removeItemFromTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/removeItemFromTab", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
 
-    var createTabButton = document.querySelector('#create-item-button');
-    createTabButton.addEventListener('click', function () {    
+    var createItemButton = document.querySelector('#create-item-button');
+    createItemButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/createItem", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
 
-    var createTabButton = document.querySelector('#add-itemToTab-button');
-    createTabButton.addEventListener('click', function () {    
+    var addItemToTabButton = document.querySelector('#add-itemToTab-button');
+    addItemToTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/addItemToTab", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
 
-    var createTabButton = document.querySelector('#add-claimItem-button');
-    createTabButton.addEventListener('click', function () {    
+    var claimItemButton = document.querySelector('#add-claimItem-button');
+    claimItemButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/claimItem", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
 
-    var createTabButton = document.querySelector('#unclaimItem-button');
-    createTabButton.addEventListener('click', function () {    
+    var unclaimItemButton = document.querySelector('#unclaimItem-button');
+    unclaimItemButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/unclaimItem", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
+
+  var splitCheckoutButton = document.querySelector('#checkout-button');
+    splitCheckoutButton.addEventListener('click', function () {    
+      console.log("checkout requested");
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/splitCheckout", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+
+
 
   </script>
 

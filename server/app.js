@@ -138,6 +138,21 @@ app.post("/unclaimItem", function (req, res) {
   res.send("unclaimed item"); 
 });
 
+/*** Split Checkout API ***/
+
+// receives a tabID
+app.get("/splitCheckout", function (req, res) {
+  //TODO this func
+  // TODO make all users pay. (add tab/amount to their history?). have restaurant revenue?
+  //dbo.collection("tabs").updateOne({tabID : req.body.tabID}, { $set: {activeTab : tabID}}, function(err, res) {
+  dbo.collection("tabs").updateOne({tabID : 1}, { $set: {status : "closed"}}, function(err, res) {
+      if (err) throw err;
+      //console.log("succesful tab checkout for tab " + req.body.tabID);
+      console.log("succesful tab checkout");
+  });
+
+});
+
 /******* Database related functions *******/
 
 function connectToDB() {
@@ -283,7 +298,7 @@ function removeUserFromTab(tabID, userID){
 function addItemToTab(tabID, itemID){
     // TODO ensure tabid and itemID exist    
   dbo.collection("config").findOne({tabItemID : { $exists: true }}, function(err, result) {
-    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {claimedItems: {tabItemId : result.tabItemID, itemID : itemID, userList : []}}}, function(err, res) {
+    dbo.collection("tabs").updateOne({tabID : tabID}, { $push: {claimedItems: {tabItemID : result.tabItemID, itemID : itemID, userList : []}}}, function(err, res) {
         if (err) throw err;
         console.log("added item to tab");
         dbo.collection("config").updateOne({tabItemID : result.tabItemID}, { $set: {tabItemID :  result.tabItemID + 1}}, function(err, res2) {
