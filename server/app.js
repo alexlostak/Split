@@ -150,6 +150,7 @@ app.get("/splitCheckout", function (req, res) {
       if (err) throw err;
       //console.log("succesful tab checkout for tab " + req.body.tabID);
       console.log("succesful tab checkout");
+      res.send("succesful tab checkout");
   });
 
 });
