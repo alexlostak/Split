@@ -108,8 +108,10 @@ var mongoButton = document.querySelector('#reopen-button');
     var removeItemFromTabButton = document.querySelector('#remove-item-from-tab');
     removeItemFromTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/removeItemFromTab", false); // false for synchronous request
-      xmlHttp.send(null);
+      xmlHttp.open("POST", "/removeItemFromTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":3, "tabItemID" : 4});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
       console.log(xmlHttp.responseText);
     }    );
 

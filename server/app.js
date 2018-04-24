@@ -124,10 +124,11 @@ app.post("/claimItem", function (req, res) {
 
 /*** Delete APIs ***/
 
-app.get("/removeItemFromTab", function (req, res) {
+// receives tabID and tabItemID
+app.post("/removeItemFromTab", function (req, res) {
   //TODO this function 
-  //removeItemFromTab(req.body.tabID, req.body.itemID)
-  removeItemFromTab(1, 5);
+  removeItemFromTab(parseInt(req.body.tabID), parseInt(req.body.tabItemID));
+  //removeItemFromTab(1, 5);
   res.send("removed item from menu"); 
 });
 
@@ -334,9 +335,10 @@ function addItemToTab(tabID, itemID){
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise
-function removeItemFromTab(tabID, itemID){
+function removeItemFromTab(tabID, tabItemID){
   //TODO make sure that we delete from claimedItems
-  dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}, $pull: {claimedItems : {itemID:itemID}}  }, function(err, res) {
+  //dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}, $pull: {claimedItems : {tabItemID:tabItemID}}  }, function(err, res) {
+    dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {claimedItems : {tabItemID:tabItemID}}  }, function(err, res) {
         if (err) throw err;
         console.log("removed item from tab");
       });
