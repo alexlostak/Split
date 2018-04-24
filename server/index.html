@@ -43,8 +43,10 @@
 var mongoButton = document.querySelector('#reopen-button');
     mongoButton.addEventListener('click', function () {
 	          var xmlHttp = new XMLHttpRequest();
-		        xmlHttp.open("GET", "/reopenTab", false); // false for synchronous request
-			      xmlHttp.send(null);
+		        xmlHttp.open("POST", "/reopenTab", false); // false for synchronous request
+            var params = JSON.stringify({"tabID":1});
+            xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+			      xmlHttp.send(params);
 			            console.log(xmlHttp.responseText);
 				        }    );
 

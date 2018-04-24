@@ -158,9 +158,9 @@ app.get("/splitCheckout", function (req, res) {
   });
 });
 
-
-app.get("/reopenTab", function (req, res) {
-	dbo.collection("tabs").updateOne({tabID : 1}, { $set: {status : "open"}}, function(err, res2) {
+// receive a tabID and reopen (change status to "open") for that tab.
+app.post("/reopenTab", function (req, res) {
+	dbo.collection("tabs").updateOne({tabID : parseInt(req.body.tabID)}, { $set: {status : "open"}}, function(err, res2) {
 	if (err) throw err;
 	        console.log("succesful tab reopen");
 	        res.send("succesful tab reopen");
