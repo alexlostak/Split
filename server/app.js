@@ -50,10 +50,23 @@ app.get("/createItem", function (req, res) {
   res.send("created item");
 });
 
-app.get("/createTab", function (req, res) {
-  addTabToDB(parseInt(req.body.restID),parseInt(req.body.tableID));
+app.post("/createTab", function (req, res) {
+  //addTabToDB(parseInt(req.body.restID),parseInt(req.body.tableID));
   //addTabToDB(1,1);
-  res.send("tab created"); 
+  dbo.collection("config").findOne({tabID : { $exists: true }}, function(err, result) {
+    var newTab = {tabID : result.tabID , restID : parseInt(req.body.restID), tableID : parseInt(req.body.tableID), status : "open", itemList : [], claimedItems : []};
+    dbo.collection("tabs").insertOne(newTab, function(err, res2) {
+      if (err) throw err;
+      // increment counter
+      var newTabID = result.tabID + 1;
+      dbo.collection("config").updateOne({tabID : result.tabID}, { $set: {tabID :  newTabID}}, function(err, res3) {
+        if (err) throw err;
+        console.log("tab counter incremented");
+      });
+      res.send({"tabID" : result.tabID}); 
+      console.log("a tab was created");
+    });
+  })  
 });
 
 app.get("/createUser", function (req, res) {
@@ -179,11 +192,6 @@ function connectToDB() {
     if (err) throw err;
     console.log("Database connected!");
     dbo = db.db("SplitServer");
-
-    //db.authenticate("dbadmin", "startup$2018", function(err, res) {
-//	    if (err) throw err;
-//	    console.log("db authenticated");
-  //  });
   });
 }
 
