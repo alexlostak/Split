@@ -33,7 +33,7 @@ app.post("/postTest", function (req, res) {
 app.get("/createRestaurant", function (req, res) {
   addRestaurantToDB("p-terrys2", 300, "guad", ["table1", "table2", "table3"]);
   //addRestaurantToDB(req.body.restName, req.body.restCapacity, req.body.restLocation, req.body.restTables)
-  res.send({"Kerby Lanes": "good"}); // TODO: fix. produces same error of stringify.
+  res.send({"p-terrys2": "good"}); 
 });
 
 app.get("/createMenu", function (req, res) {
@@ -51,9 +51,9 @@ app.get("/createItem", function (req, res) {
 });
 
 app.get("/createTab", function (req, res) {
-  // addTabToDB(req.body.restID,req.body.tableID);
-  addTabToDB(1,1);
-  res.send("success"); 
+  addTabToDB(parseInt(req.body.restID),parseInt(req.body.tableID));
+  //addTabToDB(1,1);
+  res.send("tab created"); 
 });
 
 app.get("/createUser", function (req, res) {
@@ -79,8 +79,6 @@ app.post("/getRest", function (req, res) {
 		        res.send(result);
 		      });
 });
-
-
 
 /*** Setter APIs ***/
 
@@ -137,7 +135,7 @@ app.get("/removeItemFromMenu", function (req, res) {
 });
 
 app.post("/unclaimItem", function (req, res) {
-  unclaimItem(parseInt(req.body.userID), parseInt(req.body.itemID), parseInt(req.body.tabID));
+  unclaimItem(parseInt(req.body.userID), parseInt(req.body.tabItemID), parseInt(req.body.tabID));
   //unclaimItem(2, 1, 1);
   res.send("unclaimed item"); 
 });
@@ -169,7 +167,8 @@ app.get("/reopenTab", function (req, res) {
 /******* Database related functions *******/
 
 function connectToDB() {
-  MongoClient.connect(url,{auth: {user: 'dbadmin', password: 'startup$2018'}}, function(err, db) {
+  //MongoClient.connect(url,{auth: {user: 'dbadmin', password: 'startup$2018'}}, function(err, db) {
+  MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     console.log("Database connected!");
     dbo = db.db("SplitServer");

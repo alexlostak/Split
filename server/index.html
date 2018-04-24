@@ -25,6 +25,7 @@
     <button id="unclaimItem-button"> unclaim item </button>
     <button id="checkout-button"> checkout </button>
     <button id="reopen-button"> reopen </button>
+    <button id="get-rest-button"> get-rest </button>
 
 
   </div>
@@ -64,11 +65,23 @@ var mongoButton = document.querySelector('#reopen-button');
       console.log(xmlHttp.responseText);
     }    );
 
+    var getRestButton = document.querySelector('#get-rest-button');
+    getRestButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/getRest", false); // false for synchronous request
+      var params = JSON.stringify({"restID":1});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
+      console.log(xmlHttp.responseText);
+    }    );
+
     var createTabButton = document.querySelector('#create-tab-button');
     createTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/createTab", false); // false for synchronous request
-      xmlHttp.send(null);
+      var params = JSON.stringify({"restID":1, "tableID" : 1 });
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
       console.log(xmlHttp.responseText);
     }    );
 
