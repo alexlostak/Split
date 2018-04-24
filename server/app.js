@@ -104,39 +104,22 @@ app.get("/getMenu", function (req, res) {
 
 // given a tabID, sends back a tab JSON object
 app.get("/addUserToTab", function (req, res) {
-  //TODO this function
   //addUserToTab()
   
   res.send("added user to tab"); 
-  
-
 });
 
-app.get("/addItemToTab", function (req, res) {
-  //TODO this function
-  //addItemToTab(req.body.tabID, req.body.itemID)
-  addItemToTab(1, 1);
-  addItemToTab(1, 2);
-  addItemToTab(1, 3);
-
+app.post("/addItemToTab", function (req, res) {
+  addItemToTab(parseInt(req.body.tabID), parseInt(req.body.itemID));
   res.send("added item to tab"); 
-
 });
 
 app.post("/claimItem", function (req, res) {
-  //TODO this function
 
   claimItem(parseInt(req.body.userID), parseInt(req.body.tabItemID), parseInt(req.body.tabID));
-  console.log(req.body.userID);
-  console.log(req.body.itemID);
-  console.log(req.body.tabID);
 
-	console.log(typeof req.body.userID);
-	  console.log(typeof req.body.itemID);
-	  console.log(typeof req.body.tabID);
   //claimItem(2, 1, 1);
   res.send("claimed item"); 
-
 });
 
 /*** Delete APIs ***/

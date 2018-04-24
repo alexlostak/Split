@@ -122,15 +122,17 @@ var mongoButton = document.querySelector('#reopen-button');
     var addItemToTabButton = document.querySelector('#add-itemToTab-button');
     addItemToTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/addItemToTab", false); // false for synchronous request
-      xmlHttp.send(null);
+      xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":3, "itemID" : 7});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
       console.log(xmlHttp.responseText);
     }    );
 
     var claimItemButton = document.querySelector('#add-claimItem-button');
     claimItemButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/claimItem", false); // false for synchronous request
+      xmlHttp.open("POST", "/claimItem", false); // false for synchronous request      
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
