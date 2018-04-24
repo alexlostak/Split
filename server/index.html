@@ -26,6 +26,8 @@
     <button id="checkout-button"> checkout </button>
     <button id="reopen-button"> reopen </button>
     <button id="get-rest-button"> get-rest </button>
+    <button id="get-menu-button"> get menu </button>
+    
 
 
   </div>
@@ -89,6 +91,14 @@ var mongoButton = document.querySelector('#reopen-button');
     createUserButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/createUser", false); // false for synchronous request
+      xmlHttp.send(null);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var getMenuButton = document.querySelector('#get-menu-button');
+    getMenuButton.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/getMenu", false); // false for synchronous request
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );

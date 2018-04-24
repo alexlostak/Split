@@ -80,6 +80,13 @@ app.post("/getRest", function (req, res) {
 		      });
 });
 
+app.get("/getMenu", function (req, res) {
+    dbo.collection("items").find({}).toArray(function(error, documents) {
+      if (error) throw error;
+      res.send(documents);
+    });
+});
+
 /*** Setter APIs ***/
 
 // given a tabID, sends back a tab JSON object
@@ -167,8 +174,8 @@ app.get("/reopenTab", function (req, res) {
 /******* Database related functions *******/
 
 function connectToDB() {
-  //MongoClient.connect(url,{auth: {user: 'dbadmin', password: 'startup$2018'}}, function(err, db) {
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(url,{auth: {user: 'dbadmin', password: 'startup$2018'}}, function(err, db) {
+  //MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     console.log("Database connected!");
     dbo = db.db("SplitServer");
