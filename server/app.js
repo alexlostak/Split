@@ -146,22 +146,35 @@ app.get("/splitCheckout", function (req, res) {
   //TODO this func
   // TODO make all users pay. (add tab/amount to their history?). have restaurant revenue?
   //dbo.collection("tabs").updateOne({tabID : req.body.tabID}, { $set: {activeTab : tabID}}, function(err, res) {
-  dbo.collection("tabs").updateOne({tabID : 1}, { $set: {status : "closed"}}, function(err, res) {
+  dbo.collection("tabs").updateOne({tabID : 1}, { $set: {status : "closed"}}, function(err, res2) {
       if (err) throw err;
       //console.log("succesful tab checkout for tab " + req.body.tabID);
       console.log("succesful tab checkout");
       res.send("succesful tab checkout");
   });
+});
 
+
+app.get("/reopenTab", function (req, res) {
+	dbo.collection("tabs").updateOne({tabID : 1}, { $set: {status : "open"}}, function(err, res2) {
+	if (err) throw err;
+	        console.log("succesful tab reopen");
+	        res.send("succesful tab reopen");
+	});
 });
 
 /******* Database related functions *******/
 
 function connectToDB() {
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(url,{auth: {user: 'dbadmin', password: 'startup$2018'}}, function(err, db) {
     if (err) throw err;
     console.log("Database connected!");
     dbo = db.db("SplitServer");
+
+    //db.authenticate("dbadmin", "startup$2018", function(err, res) {
+//	    if (err) throw err;
+//	    console.log("db authenticated");
+  //  });
   });
 }
 

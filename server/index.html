@@ -24,6 +24,7 @@
     <button id="remove-item-from-tab"> remove item </button>
     <button id="unclaimItem-button"> unclaim item </button>
     <button id="checkout-button"> checkout </button>
+    <button id="reopen-button"> reopen </button>
 
 
   </div>
@@ -35,6 +36,15 @@
       xmlHttp.send(null);
       console.log(xmlHttp.responseText);
     }    );
+
+var mongoButton = document.querySelector('#reopen-button');
+    mongoButton.addEventListener('click', function () {
+	          var xmlHttp = new XMLHttpRequest();
+		        xmlHttp.open("GET", "/reopenTab", false); // false for synchronous request
+			      xmlHttp.send(null);
+			            console.log(xmlHttp.responseText);
+				        }    );
+
 
     var mongoButton = document.querySelector('#create-menu');
     mongoButton.addEventListener('click', function () {    
