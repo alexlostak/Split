@@ -57,7 +57,7 @@ var mongoButton = document.querySelector('#reopen-button');
     var getTabButton = document.querySelector('#get-tab-button');
     getTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/getTab", false); // false for synchronous request
+      xmlHttp.open("POST", "/getTab", false); // false for synchronous request
       var params = JSON.stringify({"tabID":1});
       xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
       xmlHttp.send(params);

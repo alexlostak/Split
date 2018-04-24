@@ -67,18 +67,20 @@ app.get("/createUser", function (req, res) {
 
 // given a tabID, sends back a tab JSON object
 app.post("/getTab", function (req, res) {
-  // TODO check if tab exists
    console.log(parseInt(req.body.tabID));
    dbo.collection("tabs").findOne({tabID : parseInt(req.body.tabID)}, function(err, result) {    
      res.send(result); 
    });
-//  tabID = parseInt(req.body.tabID);
-  
-//  dbo.collection("tabs").findOne({tabID : 1}, function(err, result) {    
-//    console.log(result);
-//    res.send(result); 
-//  });
 });
+
+app.post("/getRest", function (req, res) {
+	   console.log(parseInt(req.body.restID));
+	   dbo.collection("restaurants").findOne({restID : parseInt(req.body.restID)}, function(err, result) {
+		        res.send(result);
+		      });
+});
+
+
 
 /*** Setter APIs ***/
 
