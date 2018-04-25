@@ -18,8 +18,7 @@
     <button id="get-tab-button"> get tab test </button>
     <button id="create-tab-button"> create tab test </button>
     <button id="create-user-button"> create user </button>
-    <button id="create-item-button"> create item </button>
-    <button id="add-itemToTab-button"> add Item To Tab </button>
+    <button id="create-item-button"> create item </button>    
     <button id="add-claimItem-button"> claim item </button>
     <button id="remove-item-from-tab"> remove item </button>
     <button id="unclaimItem-button"> unclaim item </button>
@@ -27,11 +26,19 @@
     <button id="reopen-button"> reopen </button>
     <button id="get-rest-button"> get-rest </button>
     <button id="get-menu-button"> get menu </button>
+    <button id="add-itemToTab-button"> add Item To Tab </button>
+    <button id="add-itemToTab-button2"> add Item To Tab </button>
+    <button id="add-itemToTab-button3"> add Item To Tab </button>
+    <button id="add-itemToTab-button4"> add Item To Tab </button>
+    <button id="add-itemToTab-button5"> add Item To Tab </button>
+    <button id="add-itemToTab-button6"> add Item To Tab </button>
     
 
 
   </div>
   <script>
+    var myTabID = 1;
+
     var mongoButton = document.querySelector('#create-rest');
     mongoButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
@@ -127,7 +134,57 @@ var mongoButton = document.querySelector('#reopen-button');
     addItemToTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
-      var params = JSON.stringify({"tabID":2, "itemID" : 2});
+      var params = JSON.stringify({"tabID":myTabID, "itemID" : 1});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var addItemToTabButton2 = document.querySelector('#add-itemToTab-button2');
+    addItemToTabButton2.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":myTabID, "itemID" : 4});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var addItemToTabButton3 = document.querySelector('#add-itemToTab-button3');
+    addItemToTabButton3.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":myTabID, "itemID" : 5});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var addItemToTabButton4 = document.querySelector('#add-itemToTab-button4');
+    addItemToTabButton4.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":myTabID, "itemID" : 6});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var addItemToTabButton5 = document.querySelector('#add-itemToTab-button5');
+    addItemToTabButton5.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":myTabID, "itemID" : 7});
+      xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+      xmlHttp.send(params);
+      console.log(xmlHttp.responseText);
+    }    );
+
+    var addItemToTabButton6 = document.querySelector('#add-itemToTab-button6');
+    addItemToTabButton6.addEventListener('click', function () {    
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
+      var params = JSON.stringify({"tabID":myTabID, "itemID" : 8});
       xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
       xmlHttp.send(params);
       console.log(xmlHttp.responseText);
