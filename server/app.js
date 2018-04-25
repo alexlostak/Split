@@ -110,6 +110,8 @@ app.get("/addUserToTab", function (req, res) {
 });
 
 app.post("/addItemToTab", function (req, res) {
+  console.log(req.body.tabID);
+  console.log(parseInt(req.body.tabID) + " " + parseInt(req.body.itemID));
   addItemToTab(parseInt(req.body.tabID), parseInt(req.body.itemID));
   res.send("added item to tab"); 
 });
@@ -127,7 +129,9 @@ app.post("/claimItem", function (req, res) {
 // receives tabID and tabItemID
 app.post("/removeItemFromTab", function (req, res) {
   //TODO this function 
-  removeItemFromTab(parseInt(req.body.tabID), parseInt(req.body.tabItemID));
+  //removeItemFromTab(parseInt(req.body.tabID), parseInt(req.body.tabItemID));
+  removeItemFromTab(parseInt(req.body.tabID), parseInt(req.body.itemID));
+	
   //removeItemFromTab(1, 5);
   res.send("removed item from menu"); 
 });
@@ -147,11 +151,11 @@ app.post("/unclaimItem", function (req, res) {
 /*** Split Checkout API ***/
 
 // receives a tabID
-app.get("/splitCheckout", function (req, res) {
+app.post("/splitCheckout", function (req, res) {
   //TODO this func
   // TODO make all users pay. (add tab/amount to their history?). have restaurant revenue?
-  //dbo.collection("tabs").updateOne({tabID : req.body.tabID}, { $set: {activeTab : tabID}}, function(err, res) {
-  dbo.collection("tabs").updateOne({tabID : 1}, { $set: {status : "closed"}}, function(err, res2) {
+  //dbo.collection("tabs").updateOne({tabID : parseInt(req.body.tabID)}, { $set: {activeTab : tabID}}, function(err, res) {
+  dbo.collection("tabs").updateOne({tabID : parseInt(req.body.tabID)}, { $set: {status : "closed"}}, function(err, res2) {
       if (err) throw err;
       //console.log("succesful tab checkout for tab " + req.body.tabID);
       console.log("succesful tab checkout");
@@ -335,10 +339,12 @@ function addItemToTab(tabID, itemID){
 }
 
 // receives tabID and itemID return 1 for success, 0 otherwise
-function removeItemFromTab(tabID, tabItemID){
+function removeItemFromTab(tabID, itemID){
   //TODO make sure that we delete from claimedItems
   //dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {itemList : itemID}, $pull: {claimedItems : {tabItemID:tabItemID}}  }, function(err, res) {
-    dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {claimedItems : {tabItemID:tabItemID}}  }, function(err, res) {
+//    dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {claimedItems : {tabItemID:tabItemID}}  }, function(err, res) {
+    dbo.collection("tabs").updateOne({tabID : tabID}, { $pull: {claimedItems : {itemID:itemID}}  }, function(err, res) {
+
         if (err) throw err;
         console.log("removed item from tab");
       });

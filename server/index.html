@@ -127,7 +127,7 @@ var mongoButton = document.querySelector('#reopen-button');
     addItemToTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
-      var params = JSON.stringify({"tabID":1, "itemID" : 2});
+      var params = JSON.stringify({"tabID":2, "itemID" : 2});
       xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
       xmlHttp.send(params);
       console.log(xmlHttp.responseText);
