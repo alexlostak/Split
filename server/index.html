@@ -109,7 +109,7 @@ var mongoButton = document.querySelector('#reopen-button');
     removeItemFromTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("POST", "/removeItemFromTab", false); // false for synchronous request
-      var params = JSON.stringify({"tabID":3, "tabItemID" : 4});
+      var params = JSON.stringify({"tabID":1, "tabItemID" : 7});
       xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
       xmlHttp.send(params);
       console.log(xmlHttp.responseText);
@@ -127,7 +127,7 @@ var mongoButton = document.querySelector('#reopen-button');
     addItemToTabButton.addEventListener('click', function () {    
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("POST", "/addItemToTab", false); // false for synchronous request
-      var params = JSON.stringify({"tabID":3, "itemID" : 7});
+      var params = JSON.stringify({"tabID":1, "itemID" : 2});
       xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
       xmlHttp.send(params);
       console.log(xmlHttp.responseText);
