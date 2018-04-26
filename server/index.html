@@ -57,12 +57,16 @@
     <button id="add-itemToTab-button4" class="button"> add Pepperoni Pizza To Tab </button>
     <button id="add-itemToTab-button5" class="button"> add Meat Lovers Pizza To Tab </button>
     <button id="add-itemToTab-button6" class="button"> add Item To Tab </button>
+    <br><br>
+    <h3>The tab is: </h3><br>
+    <h3 id="tabNumber"></h3>
+
     </center>
 
 
   </div>
   <script>
-    var myTabID = 1;
+    var myTabID;
 
     var mongoButton = document.querySelector('#create-rest');
     mongoButton.addEventListener('click', function () {    
@@ -119,6 +123,9 @@ var mongoButton = document.querySelector('#reopen-button');
       xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
       xmlHttp.send(params);
       console.log(xmlHttp.responseText);
+      var tabNum = JSON.parse(xmlHttp.responseText);
+      tabNumber.innerText = tabNum["tabID"];
+      myTabID = tabNum["tabID"];
     }    );
 
     var createUserButton = document.querySelector('#create-user-button');
